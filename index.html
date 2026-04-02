@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Counter-Strike 2 beginner guide covering ratings from 1k to 20k ELO with tips on movement, economy, aim, and strategy.">
+<title>CS2 Field Manual — Beginner to Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-900: #0a1a0e;
+    --green-800: #0f2614;
+    --green-700: #163520;
+    --green-600: #1e4a2c;
+    --green-500: #276038;
+    --green-400: #367a49;
+    --green-300: #4d9e62;
+    --green-200: #7ec492;
+    --green-100: #b8dfc4;
+    --green-50:  #e8f5ed;
+    --gold: #c9a84c;
+    --gold-dim: #8a6e30;
+    --red: #c0392b;
+    --amber: #d4882a;
+    --text: #e8f0eb;
+    --text2: #9ab8a3;
+    --text3: #5a7a63;
+    --surface: rgba(15,38,20,0.7);
+    --border: rgba(78,160,98,0.15);
+    --border2: rgba(78,160,98,0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background-color: var(--green-900);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(78,160,98,0.03) 40px, rgba(78,160,98,0.03) 41px),
+      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(78,160,98,0.03) 40px, rgba(78,160,98,0.03) 41px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow orb */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(39,96,56,0.25) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .header-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green-300);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--green-300);
+  }
+
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--green-300);
+    display: block;
+  }
+
+  .header-desc {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text2);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .meta-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green-200);
+  }
+
+  /* ── TABS ── */
+  .tabs-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,26,14,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 20px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    transition: background 0.2s;
+    text-align: left;
+    border-right: 1px solid var(--border);
+  }
+
+  .tab-btn:last-child { border-right: none; }
+
+  .tab-btn:hover { background: rgba(39,96,56,0.15); }
+
+  .tab-btn.active { background: rgba(39,96,56,0.2); }
+
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--green-300);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+  }
+
+  .tab-btn.active::after { transform: scaleX(1); }
+
+  .tab-tier {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    transition: color 0.2s;
+  }
+
+  .tab-btn.active .tab-tier,
+  .tab-btn:hover .tab-tier { color: var(--green-300); }
+
+  .tab-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text2);
+    transition: color 0.2s;
+  }
+
+  .tab-btn.active .tab-label,
+  .tab-btn:hover .tab-label { color: var(--text); }
+
+  .tab-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+    width: fit-content;
+  }
+
+  .badge-bronze { background: rgba(139,97,48,0.25); color: #c8874a; border: 1px solid rgba(200,135,74,0.3); }
+  .badge-silver { background: rgba(130,150,160,0.2); color: #a8c0cc; border: 1px solid rgba(168,192,204,0.3); }
+  .badge-gold   { background: rgba(201,168,76,0.2); color: var(--gold); border: 1px solid rgba(201,168,76,0.35); }
+
+  /* ── PANELS ── */
+  .panel { display: none; padding: 56px 0 80px; }
+  .panel.active { display: block; }
+
+  /* Panel intro */
+  .panel-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 56px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 700px) {
+    .panel-intro { grid-template-columns: 1fr; }
+  }
+
+  .panel-intro-left {}
+
+  .panel-rank {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(56px, 10vw, 96px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--green-700);
+    text-transform: uppercase;
+    user-select: none;
+    margin-bottom: 8px;
+  }
+
+  .panel-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .panel-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text2);
+    line-height: 1.75;
+  }
+
+  .panel-intro-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .focus-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green-400);
+    border-radius: 2px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .focus-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+  }
+
+  .focus-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .focus-sub {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 1px;
+  }
+
+  /* ── SECTION HEADINGS ── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    margin-top: 48px;
+  }
+
+  .section-header:first-child { margin-top: 0; }
+
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+
+  .card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green-400), transparent);
+  }
+
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .card-body {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .card-body strong {
+    color: var(--green-200);
+    font-weight: 500;
+  }
+
+  /* ── TIPS LIST ── */
+  .tips {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .tip {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .tip:hover { border-color: var(--border2); }
+
+  .tip-num {
+    background: rgba(39,96,56,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--green-300);
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .tip-content {
+    padding: 14px 18px;
+  }
+
+  .tip-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .tip-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  .tip-desc strong { color: var(--green-200); font-weight: 500; }
+
+  /* ── CALLOUT BOX ── */
+  .callout {
+    border: 1px solid;
+    border-radius: 3px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    position: relative;
+    padding-left: 52px;
+  }
+
+  .callout::before {
+    position: absolute;
+    left: 18px;
+    top: 19px;
+    font-size: 18px;
+  }
+
+  .callout-tip { border-color: rgba(78,160,98,0.3); background: rgba(39,96,56,0.15); }
+  .callout-tip::before { content: '💡'; }
+
+  .callout-warn { border-color: rgba(212,136,42,0.35); background: rgba(212,136,42,0.08); }
+  .callout-warn::before { content: '⚠️'; }
+
+  .callout-danger { border-color: rgba(192,57,43,0.35); background: rgba(192,57,43,0.08); }
+  .callout-danger::before { content: '🚫'; }
+
+  .callout-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .callout-body {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  .callout-body strong { color: var(--text); font-weight: 500; }
+
+  /* ── KEYBIND TABLE ── */
+  .keybinds {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .keybind {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .keybind-label {
+    font-size: 13px;
+    color: var(--text2);
+    font-weight: 400;
+  }
+
+  .key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--green-200);
+    background: rgba(39,96,56,0.3);
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── ECONOMY TABLE ── */
+  .eco-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .eco-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,26,14,0.5);
+  }
+
+  .eco-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .eco-table tr:last-child td { border-bottom: none; }
+
+  .eco-table tr:hover td { background: rgba(39,96,56,0.08); }
+
+  .eco-table .eco-type {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .eco-table .eco-cash { color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  /* ── MAP CHIP ── */
+  .map-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .map-chip {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 16px;
+    border: 1px solid var(--border2);
+    border-radius: 2px;
+    color: var(--text2);
+    background: var(--surface);
+    transition: all 0.15s;
+    cursor: default;
+  }
+
+  .map-chip:hover {
+    background: rgba(39,96,56,0.2);
+    color: var(--text);
+    border-color: var(--green-400);
+  }
+
+  .map-chip.recommended {
+    border-color: var(--green-400);
+    color: var(--green-200);
+    background: rgba(39,96,56,0.2);
+  }
+
+  /* ── WEAPON GRID ── */
+  .weapons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .weapon-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 14px 16px;
+    transition: border-color 0.2s;
+  }
+
+  .weapon-card:hover { border-color: var(--border2); }
+
+  .weapon-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .weapon-role {
+    font-size: 11px;
+    color: var(--green-300);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .weapon-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  .weapon-note {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .skill-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+
+  .skill-bar-wrap {}
+
+  .skill-bar-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+
+  .skill-bar-name { color: var(--text2); font-weight: 400; }
+  .skill-bar-val { font-family: 'JetBrains Mono', monospace; color: var(--green-300); font-size: 11px; }
+
+  .skill-bar-track {
+    height: 4px;
+    background: rgba(78,160,98,0.12);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-500), var(--green-300));
+    border-radius: 2px;
+    animation: fillbar 1s ease forwards;
+    transform-origin: left;
+  }
+
+  @keyframes fillbar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    text-align: center;
+  }
+
+  footer p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  /* ── SKIP NAV (accessibility) ── */
+  .skip-nav {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    background: var(--green-400);
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 3px;
+    z-index: 9999;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-nav:focus { top: 16px; }
+
+  /* ── FOCUS STYLES (accessibility) ── */
+  :focus-visible {
+    outline: 2px solid var(--green-300);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ── ANIMATIONS ── */
+  .panel.active .card,
+  .panel.active .tip,
+  .panel.active .focus-area {
+    animation: fadein 0.35s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel.active .card:nth-child(1) { animation-delay: 0.05s; }
+  .panel.active .card:nth-child(2) { animation-delay: 0.10s; }
+  .panel.active .card:nth-child(3) { animation-delay: 0.15s; }
+  .panel.active .card:nth-child(4) { animation-delay: 0.20s; }
+  .panel.active .card:nth-child(5) { animation-delay: 0.25s; }
+  .panel.active .card:nth-child(6) { animation-delay: 0.30s; }
+  .panel.active .tip:nth-child(1) { animation-delay: 0.05s; }
+  .panel.active .tip:nth-child(2) { animation-delay: 0.10s; }
+  .panel.active .tip:nth-child(3) { animation-delay: 0.15s; }
+  .panel.active .tip:nth-child(4) { animation-delay: 0.20s; }
+  .panel.active .tip:nth-child(5) { animation-delay: 0.25s; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 52px; }
+    .tab-btn { padding: 16px 20px; }
+    .tab-label { font-size: 18px; }
+    .cards { grid-template-columns: 1fr; }
+    .keybinds { grid-template-columns: 1fr 1fr; }
+    .weapons { grid-template-columns: 1fr 1fr; }
+    .panel-rank { font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-nav">Skip to main content</a>
+
+<div class="container">
+  <header>
+    <div class="header-eyebrow">Counter-Strike 2 · Field Manual</div>
+    <h1>Learn to<em>dominate.</em></h1>
+    <p class="header-desc">A structured guide for players at every stage — from your first ranked match to cracking the top tier. No fluff, just what actually works.</p>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Tiers Covered</span>
+        <span class="meta-value">3 Ranges</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">ELO Range</span>
+        <span class="meta-value">1K – 20K</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Format</span>
+        <span class="meta-value">Premier</span>
+      </div>
+    </div>
+  </header>
+</div>
+
+<nav class="tabs-wrapper" aria-label="ELO tier navigation">
+  <div class="container">
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" onclick="switchTab(0)">
+        <span class="tab-tier">Tier 1</span>
+        <span class="tab-label">1K – 5K ELO</span>
+        <span class="tab-badge badge-bronze">Beginner</span>
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" onclick="switchTab(1)">
+        <span class="tab-tier">Tier 2</span>
+        <span class="tab-label">5K – 10K ELO</span>
+        <span class="tab-badge badge-silver">Intermediate</span>
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" onclick="switchTab(2)">
+        <span class="tab-tier">Tier 3</span>
+        <span class="tab-label">10K – 20K ELO</span>
+        <span class="tab-badge badge-gold">Advanced</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="main-content">
+<div class="container">
+
+<!-- ════════════════════════════════════════ PANEL 1 -->
+<section class="panel active" id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+
+  <div class="panel-intro">
+    <div class="panel-intro-left">
+      <div class="panel-rank" aria-hidden="true">1–5K</div>
+      <div class="panel-title">The Foundation</div>
+      <p class="panel-desc">At this level, the gap between winning and losing comes down to fundamental habits. Don't worry about advanced strategy — lock in the basics and your rating will climb naturally.</p>
+    </div>
+    <div class="panel-intro-right">
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">🎯</span>
+        <div>
+          <div class="focus-text">Aim & Crosshair Placement</div>
+          <div class="focus-sub">Stop shooting at the floor</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">🚶</span>
+        <div>
+          <div class="focus-text">Movement Basics</div>
+          <div class="focus-sub">Counter-strafing is non-negotiable</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">💰</span>
+        <div>
+          <div class="focus-text">Economy Awareness</div>
+          <div class="focus-sub">Know when to save and when to buy</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">🗺️</span>
+        <div>
+          <div class="focus-text">Map Basics</div>
+          <div class="focus-sub">Learn two maps really well</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AIM -->
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Aim Fundamentals</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🎯</span>
+      <div class="card-title">Crosshair Placement</div>
+      <div class="card-body">Always keep your crosshair at <strong>head height</strong> and pre-aimed at where enemies will appear. If your crosshair is on the floor, you're losing every duel before it starts. Develop this as a reflex — it's the single highest-value habit at this tier.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🖱️</span>
+      <div class="card-title">Sensitivity & Setup</div>
+      <div class="card-body">Aim for <strong>400–800 DPI × 1.5–2.5 in-game</strong> sensitivity. Lower is generally better for precision. Raw input ON, mouse acceleration OFF. You don't need expensive gear — consistency beats hardware every time.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">⏸️</span>
+      <div class="card-title">Burst, Don't Spray</div>
+      <div class="card-body">CS2's recoil is punishing for beginners. Instead of holding down spray, fire <strong>2–4 round bursts</strong> and release. At range, single shots only. Learn the AK-47 spray pattern when you're ready — but burst first.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🧰</span>
+      <div class="card-title">Aim Training</div>
+      <div class="card-body">Spend <strong>10–15 minutes</strong> in aim_botz or the CS2 aim maps before queuing. Work on flick shots at close range, then graduate to tracking. Consistency comes before speed.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Pro tip — the first bullet</div>
+    <div class="callout-body">The very first bullet of any weapon is perfectly accurate when standing still. Use this — <strong>stop, shoot, move.</strong> Don't fire while running unless it's a shotgun.</div>
+  </div>
+
+  <!-- MOVEMENT -->
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Movement</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="tips">
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">01</div>
+      <div class="tip-content">
+        <div class="tip-title">Counter-Strafe</div>
+        <div class="tip-desc">Tap the <strong>opposite key</strong> before shooting. If moving right, tap A briefly before firing. This instantly kills your momentum and makes your shot accurate. This is the most important mechanical skill in CS2.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">02</div>
+      <div class="tip-content">
+        <div class="tip-title">Walk Don't Run</div>
+        <div class="tip-desc">Hold <strong>Shift</strong> to walk silently. Running makes noise heard across the map. When rotating or holding an angle, walk. Save running for rotations when the enemy knows where you are.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">03</div>
+      <div class="tip-content">
+        <div class="tip-title">Don't Jump-Peek</div>
+        <div class="tip-desc">Jumping while shooting makes you wildly inaccurate. Never jump into a fight unless you're clearing a boost or escaping. <strong>Crouching</strong> briefly to peek angles can be useful but stay unpredictable.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">04</div>
+      <div class="tip-content">
+        <div class="tip-title">Peek Corners Wide</div>
+        <div class="tip-desc">When peeking an angle, swing out <strong>wide</strong> rather than tight. A wide peek gives you more time to see and react to the enemy before they see your full body. This is called "shoulder peeking" at advanced levels.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ECONOMY -->
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Economy Basics</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <table class="eco-table" aria-label="Economy round types">
+    <thead>
+      <tr>
+        <th scope="col">Round Type</th>
+        <th scope="col">Your Cash</th>
+        <th scope="col">What to Buy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="eco-type">Pistol (R1)</td>
+        <td class="eco-cash">$800</td>
+        <td>Glock (default) or USP-S. Consider Kevlar if CT. Save the rest.</td>
+      </tr>
+      <tr>
+        <td class="eco-type">Full Buy</td>
+        <td class="eco-cash">$4,000+</td>
+        <td>AK-47 / M4A1-S, Kevlar + Helmet, grenades. This is your win condition.</td>
+      </tr>
+      <tr>
+        <td class="eco-type">Eco Round</td>
+        <td class="eco-cash">&lt;$2,000</td>
+        <td>Save everything. Maybe pistol + armor. You're banking for next round.</td>
+      </tr>
+      <tr>
+        <td class="eco-type">Force Buy</td>
+        <td class="eco-cash">$2–3K</td>
+        <td>Risky. SMG or pistol + utility. Only force if your team agrees.</td>
+      </tr>
+      <tr>
+        <td class="eco-type">Anti-Eco</td>
+        <td class="eco-cash">Enemy eco</td>
+        <td>Still buy full. Don't get caught with a knife against a pistol rush.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-warn">
+    <div class="callout-title">Never buy alone</div>
+    <div class="callout-body">One player buying while teammates eco wastes money. <strong>Always call the buy in voice chat.</strong> "Saving" or "buy?" at the start of every round builds good team habits even at low ELO.</div>
+  </div>
+
+  <!-- WEAPONS -->
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Weapons to Learn First</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="weapons">
+    <div class="weapon-card">
+      <div class="weapon-name">AK-47</div>
+      <div class="weapon-role">T-Side Rifle</div>
+      <div class="weapon-price">$2,700</div>
+      <div class="weapon-note">One-shot headshot through any armor. The best rifle in the game.</div>
+    </div>
+    <div class="weapon-card">
+      <div class="weapon-name">M4A1-S</div>
+      <div class="weapon-role">CT-Side Rifle</div>
+      <div class="weapon-price">$2,900</div>
+      <div class="weapon-note">Silenced, accurate, low recoil. Preferred by most CTs.</div>
+    </div>
+    <div class="weapon-card">
+      <div class="weapon-name">AWP</div>
+      <div class="weapon-role">Sniper</div>
+      <div class="weapon-price">$4,750</div>
+      <div class="weapon-note">One-shot body kill. Devastating in the right hands but slow.</div>
+    </div>
+    <div class="weapon-card">
+      <div class="weapon-name">Desert Eagle</div>
+      <div class="weapon-role">Pistol</div>
+      <div class="weapon-price">$700</div>
+      <div class="weapon-note">One-tap capable. High-risk, high-reward on eco rounds.</div>
+    </div>
+    <div class="weapon-card">
+      <div class="weapon-name">MP9 / MAC-10</div>
+      <div class="weapon-role">SMG</div>
+      <div class="weapon-price">$1,250</div>
+      <div class="weapon-note">Good against eco. High mobility, earns $600 per kill.</div>
+    </div>
+    <div class="weapon-card">
+      <div class="weapon-name">P250</div>
+      <div class="weapon-role">Pistol</div>
+      <div class="weapon-price">$300</div>
+      <div class="weapon-note">Upgrade pistol for eco rounds. Can headshot helmeted players.</div>
+    </div>
+  </div>
+
+  <!-- MAPS -->
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Maps — Start Small</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <p style="font-size:14px;color:var(--text2);margin-bottom:16px;font-weight:300;">Don't try to learn every map. Pick two and master them. Knowing callouts and common angles alone will give you a massive edge at this tier.</p>
+
+  <div class="map-chips" aria-label="Recommended starter maps">
+    <div class="map-chip recommended" title="Recommended">Dust 2 ★</div>
+    <div class="map-chip recommended" title="Recommended">Mirage ★</div>
+    <div class="map-chip">Inferno</div>
+    <div class="map-chip">Nuke</div>
+    <div class="map-chip">Vertigo</div>
+    <div class="map-chip">Anubis</div>
+    <div class="map-chip">Ancient</div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Essential Settings & Keybinds</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="keybinds" aria-label="Recommended keybinds">
+    <div class="keybind"><span class="keybind-label">Buy Menu</span><span class="key">B</span></div>
+    <div class="keybind"><span class="keybind-label">Walk / Shift</span><span class="key">Shift</span></div>
+    <div class="keybind"><span class="keybind-label">Jump</span><span class="key">Space</span></div>
+    <div class="keybind"><span class="keybind-label">Crouch</span><span class="key">Ctrl</span></div>
+    <div class="keybind"><span class="keybind-label">Flash Grenade</span><span class="key">Mouse 4</span></div>
+    <div class="keybind"><span class="keybind-label">Smoke Grenade</span><span class="key">Mouse 5</span></div>
+    <div class="keybind"><span class="keybind-label">Molotov / HE</span><span class="key">G / H</span></div>
+    <div class="keybind"><span class="keybind-label">Knife</span><span class="key">3</span></div>
+    <div class="keybind"><span class="keybind-label">Scoreboard</span><span class="key">Tab</span></div>
+    <div class="keybind"><span class="keybind-label">Inspect Weapon</span><span class="key">F</span></div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════ PANEL 2 -->
+<section class="panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2">
+
+  <div class="panel-intro">
+    <div class="panel-intro-left">
+      <div class="panel-rank" aria-hidden="true">5–10K</div>
+      <div class="panel-title">Structured Play</div>
+      <p class="panel-desc">You have the basics down. Now it's time to develop game sense, utility usage, and team coordination. Individual skill still matters — but reading the game will win more rounds than outaiming.</p>
+    </div>
+    <div class="panel-intro-right">
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">💣</span>
+        <div>
+          <div class="focus-text">Utility Usage</div>
+          <div class="focus-sub">Smokes, flashes, molotovs</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">🧠</span>
+        <div>
+          <div class="focus-text">Game Sense</div>
+          <div class="focus-sub">Reading rotations and timings</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">📻</span>
+        <div>
+          <div class="focus-text">Communication</div>
+          <div class="focus-sub">Concise, useful callouts</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">🗺️</span>
+        <div>
+          <div class="focus-text">Map Control</div>
+          <div class="focus-sub">Contesting mid and info gathering</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UTILITY -->
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Utility — The Real Separator</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">💨</span>
+      <div class="card-title">Smokes</div>
+      <div class="card-body">Learn <strong>3–5 smokes per map</strong> on the maps you play. Prioritize smokes that cut off CT rotations (e.g. jungle on Mirage, CT and B apps on Inferno). A good smoke execute wins rounds without firing a shot.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">💥</span>
+      <div class="card-title">Flashbangs</div>
+      <div class="card-body">Pop-flashes are the key skill here — a flash that comes from behind cover and <strong>gives you no time to look away</strong>. Learn one or two pop-flashes per site entry. Communicate "flashing" before you throw.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🔥</span>
+      <div class="card-title">Molotovs / Incendiaries</div>
+      <div class="card-body">These are <strong>position denial tools</strong>. Use them to force enemies out of common spots (CT on Mirage, boost positions, B site corners). On defense, delay a push. On offense, clear common angles before committing.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">💣</span>
+      <div class="card-title">HE Grenades</div>
+      <div class="card-body">Best used to <strong>combo with molotovs</strong> or soften clustered enemies. Don't waste an HE on a full-health player in cover — save it for low-health targets or to finish a fire damage victim.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">One smoke at a time</div>
+    <div class="callout-body">Don't try to memorize 20 smokes at once. <strong>Learn 3 on one site, play 50 matches with them, then add 3 more.</strong> Muscle memory beats knowledge you can't execute under pressure.</div>
+  </div>
+
+  <!-- GAME SENSE -->
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Game Sense & Reads</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="tips">
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">01</div>
+      <div class="tip-content">
+        <div class="tip-title">Use the Radar</div>
+        <div class="tip-desc">Glance at your minimap every 5–10 seconds. Where are your teammates? Where did you last hear enemies? <strong>Information is everything</strong> — the radar shows you what you know. Build a picture.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">02</div>
+      <div class="tip-content">
+        <div class="tip-title">Count Enemies</div>
+        <div class="tip-desc">When a teammate calls a kill, that's one fewer enemy on the map. <strong>Track the count.</strong> If two are confirmed A and you're on B with four teammates, you can likely push. Numbers advantage is free information.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">03</div>
+      <div class="tip-content">
+        <div class="tip-title">Timing Awareness</div>
+        <div class="tip-desc">Learn how long rotations take on your maps. If a CT pushes mid on Mirage, their B site is temporarily weak. The <strong>15-second rule</strong> — after a kill in CT territory, rotate within 15 seconds or the advantage is gone.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">04</div>
+      <div class="tip-content">
+        <div class="tip-title">Don't Trade Yourself</div>
+        <div class="tip-desc">After a teammate gets killed, resist the urge to rush in. Your enemy is watching the same angle. <strong>Re-angle, use utility, or wait.</strong> A traded kill doesn't help — a traded kill where you survive does.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">05</div>
+      <div class="tip-content">
+        <div class="tip-title">Play for the Objective</div>
+        <div class="tip-desc">Planting the bomb matters even when you're losing. A planted bomb <strong>forces CTs to retake</strong> — even if you die, your teammates may finish the round. Never give away a bomb plant opportunity.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROLES -->
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Team Roles — Know Yours</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🔰</span>
+      <div class="card-title">Entry Fragger</div>
+      <div class="card-body">First through the door. Your job is to <strong>trade yourself for information and space</strong> — not necessarily frags. Use utility to enter, be aggressive, and accept that you may die. You open the round for your team.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🤝</span>
+      <div class="card-title">Support</div>
+      <div class="card-body">Flash your entry fragger in. Throw the smoke. Hold their flank. <strong>Your stats will look modest</strong>, but good support players win more rounds than any individual fragger. Communication and utility are your weapons.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🧭</span>
+      <div class="card-title">In-Game Leader (IGL)</div>
+      <div class="card-body">Call the strats. Where are we going? Are we defaulting or executing? <strong>A bad call made with confidence</strong> beats no call at all. Step up if nobody else is leading — even basic shotcalling lifts your team.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🔫</span>
+      <div class="card-title">AWPer</div>
+      <div class="card-body">Play to take duels you should win. Hold long angles, get a pick, <strong>then re-position</strong>. Never get caught in a dueling war with a rifler up close. A dead AWP is $4,750 gone and lost map control.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🛡️</span>
+      <div class="card-title">Lurker</div>
+      <div class="card-body">Create <strong>chaos on the opposite side</strong> of the main execute. Kill rotating CTs, take map control, or stall. A good lurk at the right time can win a round by itself. Bad lurking just leaves your team short-handed.</div>
+    </div>
+  </div>
+
+  <!-- COMMUNICATION -->
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Communication That Actually Helps</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">The 3-second rule for callouts</div>
+    <div class="callout-body"><strong>"Two A long, low health"</strong> — that's a perfect callout. Location, count, health. Done in one second. Don't narrate your death. Don't blame teammates. Call the info your team needs to win the round.</div>
+  </div>
+
+  <div class="tips">
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">01</div>
+      <div class="tip-content">
+        <div class="tip-title">Call Before You Die</div>
+        <div class="tip-desc">The moment you spot an enemy, <strong>call it out before the fight</strong>. "One B window" the second you see them — not after you're already dead. Dead men give the most valuable intel.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">02</div>
+      <div class="tip-content">
+        <div class="tip-title">Say "Flashing" Before You Flash</div>
+        <div class="tip-desc">This one is simple and almost nobody does it. <strong>One word saves your teammate from getting blinded.</strong> Develop the habit in every practice session.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">03</div>
+      <div class="tip-content">
+        <div class="tip-title">Stay Positive</div>
+        <div class="tip-desc">Tilted teams lose. If someone makes a mistake, say nothing or say something useful. <strong>"It's fine, next round"</strong> is more valuable than any tactical call when your team's morale is cracking.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILL FOCUS -->
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Where to Invest Your Practice Time</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="skill-bars" aria-label="Recommended practice time allocation">
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-header">
+        <span class="skill-bar-name">Deathmatch (raw aim)</span>
+        <span class="skill-bar-val">25%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:25%"></div></div>
+    </div>
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-header">
+        <span class="skill-bar-name">Utility practice (offline / workshop)</span>
+        <span class="skill-bar-val">20%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:20%"></div></div>
+    </div>
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-header">
+        <span class="skill-bar-name">Ranked matches</span>
+        <span class="skill-bar-val">40%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:40%"></div></div>
+    </div>
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-header">
+        <span class="skill-bar-name">Demo review (your own games)</span>
+        <span class="skill-bar-val">15%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:15%"></div></div>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-title">Demo review is your secret weapon</div>
+    <div class="callout-body">Watch your own replays from the enemy's perspective. You'll see exactly where you were predictable, when you over-peeked, and what information you missed. <strong>15 minutes of review teaches more than 3 extra ranked games.</strong></div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════ PANEL 3 -->
+<section class="panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3">
+
+  <div class="panel-intro">
+    <div class="panel-intro-left">
+      <div class="panel-rank" aria-hidden="true">10–20K</div>
+      <div class="panel-title">High-Level Play</div>
+      <p class="panel-desc">At this tier, individual mechanics are assumed. The difference is mental — reading the game at a meta level, exploiting micro-advantages, and executing under pressure. Every decision has a cost-benefit.</p>
+    </div>
+    <div class="panel-intro-right">
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">♟️</span>
+        <div>
+          <div class="focus-text">Mid-Round Adaptation</div>
+          <div class="focus-sub">Reading and reacting to live info</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">📊</span>
+        <div>
+          <div class="focus-text">Macro Strategy</div>
+          <div class="focus-sub">Default play, map control, timing</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">🎭</span>
+        <div>
+          <div class="focus-text">Unpredictability</div>
+          <div class="focus-sub">Mixing up timings and angles</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <span class="focus-icon" aria-hidden="true">🔬</span>
+        <div>
+          <div class="focus-text">Niche Mechanics</div>
+          <div class="focus-sub">Jiggle peeking, bhop, one-way smokes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MACRO -->
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Macro Strategy & Default Play</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🗂️</span>
+      <div class="card-title">Default vs Execute</div>
+      <div class="card-body">A default is a <strong>slow, information-gathering play</strong> — spread the map, collect intel, then commit late. An execute is a coordinated site push with full utility. Knowing which to call based on what you know about enemy positions is the highest-level T-side decision.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">⏱️</span>
+      <div class="card-title">Timing Control</div>
+      <div class="card-body">Early aggression baits CT rotations and exposes where they are. <strong>Early mid-fight on Mirage opens B or A</strong> depending on how they respond. Map control and timing go hand-in-hand. Use information before committing bodies.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🔄</span>
+      <div class="card-title">Fake Executes</div>
+      <div class="card-body">Throw utility on one site, <strong>then go to the other</strong>. A convincing fake forces CTs to rotate — and rotating players can't be holding angles on both sites. Fakes work once per half. Use them strategically, not randomly.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🏰</span>
+      <div class="card-title">CT Setups</div>
+      <div class="card-body">Static setups get read after one half. <strong>Mix aggressive plays with passive holds.</strong> Push mid early some rounds, passive hold others. Force T-side to gather new information every round rather than execute off memory.</div>
+    </div>
+  </div>
+
+  <!-- ADVANCED MECHANICS -->
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Advanced Mechanics</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="tips">
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">01</div>
+      <div class="tip-content">
+        <div class="tip-title">Jiggle Peeking</div>
+        <div class="tip-desc">Briefly expose yourself at an angle to <strong>bait a shot or gather information</strong> without fully committing. If the enemy fires, you know they're there and roughly where. Then take the duel on your terms — counter-strafe, peek, fire.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">02</div>
+      <div class="tip-content">
+        <div class="tip-title">One-Way Smokes</div>
+        <div class="tip-desc">Certain smoke positions let you <strong>see through the bottom while they cannot see you</strong>. These are map-specific and require workshop practice to land consistently. On Inferno CT, Mirage B site, and others, they create free kills.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">03</div>
+      <div class="tip-content">
+        <div class="tip-title">Crouch-Peeking Duels</div>
+        <div class="tip-desc">Crouching while peeking changes your hitbox in a way that <strong>throws off pre-aimed crosshairs</strong>. Combined with a counter-strafe, you become very hard to hit in the first frame of a duel. High-risk but highly effective in the right spots.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">04</div>
+      <div class="tip-content">
+        <div class="tip-title">Spray Transfer</div>
+        <div class="tip-desc">After killing one enemy while spraying, <strong>transfer the recoil pattern to the next target</strong> without resetting. This requires knowing the spray pattern deeply — but a clean two-tap spray transfer on a double-peeking pair is devastating.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">05</div>
+      <div class="tip-content">
+        <div class="tip-title">Bunnyhop (BHop)</div>
+        <div class="tip-desc">Maintaining speed through consecutive jumps lets you <strong>rotate faster while being harder to hit</strong>. CS2's bhop is harder than CS:GO's — you must jump right before landing. Useful for rotations, not for peeking.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENTAL GAME -->
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>The Mental Game</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🧘</span>
+      <div class="card-title">Tilt Management</div>
+      <div class="card-body">At this level, <strong>tilt is your biggest enemy</strong> — not the enemy team. One bad round doesn't lose a match. Develop a reset routine: take a breath, focus only on what you can control right now. Past rounds don't exist.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">📈</span>
+      <div class="card-title">Process Over Outcome</div>
+      <div class="card-body">Stop playing to win rating. Play to <strong>make the correct decision every round</strong>. If you make 25 correct decisions and lose because of teammates or luck, you still improved. Rating follows process.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🔁</span>
+      <div class="card-title">Adaptation Mid-Half</div>
+      <div class="card-body">If the same site execute keeps failing, <strong>the enemy has adapted</strong>. Switch site, change timing, fake. Insanity is running the same execute a fifth time expecting different results. Read what's working and commit to it.</div>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">😴</span>
+      <div class="card-title">Session Discipline</div>
+      <div class="card-body">High-level play demands full cognitive bandwidth. <strong>Stop at 2–3 losses in a row</strong>, or after 3 hours regardless. Fatigued play locks in bad habits. Quality sessions over marathon grinding — always.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">The plateau trap</div>
+    <div class="callout-body">Most players stuck at a rating ceiling are playing the same way they always have. <strong>Identify your most common mistake across 10 demos</strong> — one specific, repeating mistake — and fix that one thing. Fixing one deep habit is worth more than grinding 100 ranked games.</div>
+  </div>
+
+  <!-- ADVANCED ECONOMY -->
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Advanced Economy Management</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="tips">
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">01</div>
+      <div class="tip-content">
+        <div class="tip-title">Force vs Eco — The Real Calculation</div>
+        <div class="tip-desc">Don't force because it "feels right." Force when: <strong>you can win the round AND save your economy if you lose, OR when the round is winnable with the buy advantage you'll create.</strong> Blind forces just hand the enemy money and weapons.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">02</div>
+      <div class="tip-content">
+        <div class="tip-title">Drop Calls</div>
+        <div class="tip-desc">If your AWPer dies and loses the rifle, <strong>coordinate drops</strong> immediately at the next buy. Priorities: AWPer gets money first, then riflers, then entry players. Know your team's cash before the buy phase ends.</div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-num" aria-hidden="true">03</div>
+      <div class="tip-content">
+        <div class="tip-title">Eco Guns That Punch Up</div>
+        <div class="tip-desc">On a hard eco: <strong>Deagle + Armor</strong> is your best chance to take a duel and grab a rifle. Save the MP9/MAC-10 for anti-eco rounds. Shotguns in tight corridors (Inferno B, Nuke) can legitimately swing eco rounds.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPROVEMENT PLAN -->
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Your Improvement Roadmap</h2>
+    <div class="section-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="skill-bars" aria-label="Advanced skill practice allocation">
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-header">
+        <span class="skill-bar-name">Ranked + Faceit (high-stakes practice)</span>
+        <span class="skill-bar-val">50%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:50%"></div></div>
+    </div>
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-header">
+        <span class="skill-bar-name">Demo review (your games + pro games)</span>
+        <span class="skill-bar-val">25%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:25%"></div></div>
+    </div>
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-header">
+        <span class="skill-bar-name">Mechanical warmup (DM, aim maps)</span>
+        <span class="skill-bar-val">15%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:15%"></div></div>
+    </div>
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-header">
+        <span class="skill-bar-name">Utility & niche mechanics practice</span>
+        <span class="skill-bar-val">10%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:10%"></div></div>
+    </div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">Watch pros on your maps</div>
+    <div class="callout-body">Find a pro player who plays your role on the maps you play. Watch their POV demos — not highlights, <strong>full matches</strong>. Pay attention to where they position, what utility they use and when, and how they move before fights. Copy the decision-making, not the flashy plays.</div>
+  </div>
+
+</section>
+
+</div><!-- end container -->
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS2 Field Manual · All ELO ranges reference CS2 Premier Mode · Information current as of 2024–2025</p>
+  </div>
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+
+  function switchTab(index) {
+    tabs.forEach((t, i) => {
+      t.classList.toggle('active', i === index);
+      t.setAttribute('aria-selected', i === index ? 'true' : 'false');
+    });
+    panels.forEach((p, i) => {
+      p.classList.toggle('active', i === index);
+    });
+    // Scroll to top of content
+    document.getElementById('main-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Keyboard navigation for tabs
+  document.querySelector('.tabs').addEventListener('keydown', e => {
+    const current = [...tabs].findIndex(t => t === document.activeElement);
+    if (current === -1) return;
+    if (e.key === 'ArrowRight') {
+      const next = (current + 1) % tabs.length;
+      tabs[next].focus();
+      switchTab(next);
+    } else if (e.key === 'ArrowLeft') {
+      const prev = (current - 1 + tabs.length) % tabs.length;
+      tabs[prev].focus();
+      switchTab(prev);
+    }
+  });
+</script>
+</body>
+</html>
